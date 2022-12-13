@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    command: python app.py
+    ports:
+      - 5000:5000
+    volumes: 
+      - .:/app
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  queue:
+    build: .
+    command: 'python consumer.py'
+    volumes: 
+      - .:/app
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  db:
+    image: postgres:latest
+    ports:
+      - 5431:5432
+    environment:
+      POSTGRES_DB: main
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - dbdata:/var/lib/postgresql/data/
+    restart: always
+
+volumes:
+  dbdata:
