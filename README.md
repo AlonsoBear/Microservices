@@ -1,5 +1,5 @@
 # Microservices
-This project consists of two microservices: an admin service written in Django, and a main app service. The admin service allows you to view and manage your products and their likes. The main app service allows customers to view and like your products.
+This project consists of two microservices run in docker containers: an admin service written in Django, and a main app service written in Flask. The admin service allows you to view and manage your products and their likes. The main app service allows customers to view and like your products.
 
 ## Requirements
 - Python 3.10
@@ -11,12 +11,18 @@ This project consists of two microservices: an admin service written in Django, 
 ## Getting Started
 Clone the repository:
 ```sh
-git clone https://github.com/user/repo.git
+git clone https://github.com/AlonsoBear/Microservices.git
+```
+
+Create inside both services ```admin``` and ```app``` a ```.env``` file.
+In this file declare an environment variable with the name of ```AMQP_URL``` like:
+```sh
+AMQP_URL=<your-amqp-url>
 ```
 
 Install the required dependencies:
 ```sh
-pip install -r requirements.txt
+pipenv install -r requirements.txt
 ```
 
 Set the AMQP_URL environment variable with your RabbitMQ AMQP URL:
@@ -24,22 +30,23 @@ Set the AMQP_URL environment variable with your RabbitMQ AMQP URL:
 AMQP_URL=amqp://user:password@host:port/vhost
 ```
 
-Run the Django migrations:
+Once you have both ```.env``` files and have Docker Desktop running, run
+inside both ```admin``` and ```app``` services the following command:
 ```sh
-python manage.py migrate
+docker-compose up
 ```
 
-Start the Django development server:
+When you have all set up you only need to run the migrations on both services
+Within the ```admin``` service, run the following command:
 ```sh
-python manage.py runserver
+docker-compose up exec backend python manage.py migrate
+```
+Within the ```app``` service, run the following command:
+```sh
+docker-compose up exec backend flask upgrade
 ```
 
-In a separate terminal, start the main app service:
-```sh
-python app.py
-```
-
-You can now access the admin service at http://localhost:8000/admin and the main app service at http://localhost:8000.
+You can now access the admin service at http://localhost:8000/ and the main app service at http://localhost:5000.
 
 ## Synchronization between Microservices
 The admin and main app services are kept in sync through the use of an event messaging system called RabbitMQ. Any changes made in the admin service will be automatically reflected in the main app service.
