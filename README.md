@@ -15,19 +15,9 @@ git clone https://github.com/AlonsoBear/Microservices.git
 ```
 
 Create inside both services ```admin``` and ```app``` a ```.env``` file.
-In this file declare an environment variable with the name of ```AMQP_URL``` like:
-```sh
-AMQP_URL=<your-amqp-url>
-```
-
-Install the required dependencies:
-```sh
-pipenv install -r requirements.txt
-```
-
 Set the AMQP_URL environment variable with your RabbitMQ AMQP URL:
 ```sh
-AMQP_URL=amqp://user:password@host:port/vhost
+AMQP_URL=<your-amqp-url>
 ```
 
 Once you have both ```.env``` files and have Docker Desktop running, run
@@ -46,7 +36,7 @@ Within the ```app``` service, run the following command:
 docker-compose up exec backend flask upgrade
 ```
 
-You can now access the admin service at http://localhost:8000/ and the main app service at http://localhost:5000.
+You can now access the admin service at http://localhost:8000 and the main app service at http://localhost:5000.
 
 ## Synchronization between Microservices
 The admin and main app services are kept in sync through the use of an event messaging system called RabbitMQ. Any changes made in the admin service will be automatically reflected in the main app service.
