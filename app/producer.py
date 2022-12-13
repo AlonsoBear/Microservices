@@ -1,7 +1,7 @@
 import pika, json
 import os
 
-AMQP_URL = os.getenv("AMQP_URL")
+AMQP_URL = os.getenv("AMQP_URL", None)
 params = pika.URLParameters(AMQP_URL)
 connection = pika.BlockingConnection(params)
 

@@ -8,8 +8,7 @@ django.setup()
 from products.models import Product
 
 
-AMQP_URL = os.getenv("AMQP_URL", "NO HABIA PERRO")
-print(AMQP_URL)
+AMQP_URL = os.getenv("AMQP_URL", None)
 params = pika.URLParameters(AMQP_URL)
 connection = pika.BlockingConnection(params)
 
